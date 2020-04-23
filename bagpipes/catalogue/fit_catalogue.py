@@ -61,7 +61,7 @@ class fit_catalogue(object):
     make_plots : bool - optional
         Whether to make output plots for each object.
 
-    individual_plots : list - optional
+    individual_plots: list - optional
         List of IDs to make plots for. Must set make_plots to True
         If individual_plots = [], make plots for all objects.
         Default: []
