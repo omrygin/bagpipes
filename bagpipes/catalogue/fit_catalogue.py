@@ -100,7 +100,7 @@ class fit_catalogue(object):
     """
 
     def __init__(self, IDs, fit_instructions, load_data, spectrum_exists=True,
-                 photometry_exists=True, make_plots=False, make_individual_plots=[],
+                 photometry_exists=True, make_plots=False, individual_plots=[],
                  cat_filt_list=None,vary_filt_list=False, redshifts=None,
                  redshift_sigma=0.,run=".", analysis_function=None, time_calls=False,
                  n_posterior=500, full_catalogue=False):
@@ -111,7 +111,7 @@ class fit_catalogue(object):
         self.spectrum_exists = spectrum_exists
         self.photometry_exists = photometry_exists
         self.make_plots = make_plots
-        self.make_individual_plots = []
+        self.individual_plots = individual_plots
         self.cat_filt_list = cat_filt_list
         self.vary_filt_list = vary_filt_list
         self.redshifts = redshifts
