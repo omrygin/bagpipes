@@ -61,6 +61,11 @@ class fit_catalogue(object):
     make_plots : bool - optional
         Whether to make output plots for each object.
 
+    individual_plots : list - optional
+        List of IDs to make plots for. Must set make_plots to True
+        If individual_plots = [], make plots for all objects.
+        Default: []
+
     cat_filt_list : list - optional
         The filt_list, or list of filt_lists for the catalogue.
 
@@ -95,9 +100,9 @@ class fit_catalogue(object):
     """
 
     def __init__(self, IDs, fit_instructions, load_data, spectrum_exists=True,
-                 photometry_exists=True, make_plots=False, cat_filt_list=None,
-                 vary_filt_list=False, redshifts=None, redshift_sigma=0.,
-                 run=".", analysis_function=None, time_calls=False,
+                 photometry_exists=True, make_plots=False, make_individual_plots=[],
+                 cat_filt_list=None,vary_filt_list=False, redshifts=None,
+                 redshift_sigma=0.,run=".", analysis_function=None, time_calls=False,
                  n_posterior=500, full_catalogue=False):
 
         self.IDs = np.array(IDs).astype(str)
@@ -106,6 +111,7 @@ class fit_catalogue(object):
         self.spectrum_exists = spectrum_exists
         self.photometry_exists = photometry_exists
         self.make_plots = make_plots
+        self.make_individual_plots = []
         self.cat_filt_list = cat_filt_list
         self.vary_filt_list = vary_filt_list
         self.redshifts = redshifts
@@ -294,13 +300,19 @@ class fit_catalogue(object):
 
             # Make plots if necessary
             if self.make_plots:
-                self.obj_fit.plot_spectrum_posterior()
-                self.obj_fit.plot_corner()
-                self.obj_fit.plot_1d_posterior()
-                self.obj_fit.plot_sfh_posterior()
+                to_plot = False
+                if len(self.individual_plots) == 0:
+                    to_plot = True
+                elif (ID in self.individual_plots):
+                    to_plot = True
 
-                if "calib" in list(self.obj_fit.fitted_model.fit_instructions):
-                    self.obj_fit.plot_calibration()
+                if to_plot:
+                    self.obj_fit.plot_spectrum_posterior()
+                    self.obj_fit.plot_corner()
+                    self.obj_fit.plot_1d_posterior()
+                    self.obj_fit.plot_sfh_posterior()
+                    if "calib" in list(self.obj_fit.fitted_model.fit_instructions):
+                        self.obj_fit.plot_calibration()
 
             # Add fitting results to output catalogue
             if self.full_catalogue:
